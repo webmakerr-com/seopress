@@ -155,9 +155,17 @@ function seopress_plugins_loaded( $hook ) {
 		}
 	}
 
-	// Load options and admin bar.
-	require_once $plugin_dir . 'inc/functions/options.php';
-	require_once $plugin_dir . 'inc/admin/admin-bar/admin-bar.php';
+        // Load options and admin bar.
+        require_once $plugin_dir . 'inc/functions/options.php';
+        require_once $plugin_dir . 'inc/admin/admin-bar/admin-bar.php';
+
+        // Load migrated PRO surfaces when the PRO plugin is not active.
+        if ( ! defined( 'SEOPRESS_PRO_VERSION' ) ) {
+                require_once $plugin_dir . 'inc/admin/redirections/redirections.php';
+                require_once $plugin_dir . 'inc/admin/schemas/schemas.php';
+                require_once $plugin_dir . 'inc/admin/bot/bot.php';
+                require_once $plugin_dir . 'inc/admin/pro-cron.php';
+        }
 
 	// Load integrations conditionally.
 	if ( did_action( 'elementor/loaded' ) && apply_filters( 'seopress_elementor_integration_enabled', true ) ) {
