@@ -216,26 +216,26 @@ class SEOPressOptions {
         /**
          * Register PRO feature submenus when the standalone PRO plugin is not active.
          */
-        private function register_pro_submenus() {
-                if ( function_exists( 'seopress_get_toggle_option' ) && '1' === seopress_get_toggle_option( 'rich-snippets' ) ) {
-                        add_submenu_page(
-                                'seopress-option',
-                                __( 'Schemas', 'wp-seopress' ),
-                                __( 'Schemas', 'wp-seopress' ),
-                                seopress_capability( 'edit_schemas', 'menu' ),
-                                'edit.php?post_type=seopress_schemas'
-                        );
-                }
+private function register_pro_submenus() {
+if ( function_exists( 'seopress_get_toggle_option' ) && '1' === seopress_get_toggle_option( 'rich-snippets' ) ) {
+add_submenu_page(
+'seopress-option',
+__( 'Schemas', 'wp-seopress' ),
+__( 'Schemas', 'wp-seopress' ),
+seopress_capability( 'manage_options', 'menu' ),
+'edit.php?post_type=seopress_schemas'
+);
+}
 
-                if ( function_exists( 'seopress_get_toggle_option' ) && '1' === seopress_get_toggle_option( '404' ) ) {
-                        add_submenu_page(
-                                'seopress-option',
-                                __( 'Redirections', 'wp-seopress' ),
-                                __( 'Redirections', 'wp-seopress' ),
-                                seopress_capability( 'edit_redirections', 'menu' ),
-                                'edit.php?post_type=seopress_404'
-                        );
-                }
+if ( function_exists( 'seopress_get_toggle_option' ) && '1' === seopress_get_toggle_option( '404' ) ) {
+add_submenu_page(
+'seopress-option',
+__( 'Redirections', 'wp-seopress' ),
+__( 'Redirections', 'wp-seopress' ),
+seopress_capability( 'manage_options', 'menu' ),
+'edit.php?post_type=seopress_404'
+);
+}
 
                 if ( function_exists( 'seopress_get_toggle_option' ) && '1' === seopress_get_toggle_option( 'bot' ) ) {
                         add_submenu_page(
