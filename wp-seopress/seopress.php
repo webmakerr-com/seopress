@@ -118,8 +118,8 @@ function seopress_bootstrap_bundled_pro() {
         }
 
         $pro_main_files = array(
-                trailingslashit( dirname( SEOPRESS_PLUGIN_DIR_PATH ) ) . 'wp-seopress-pro/seopress-pro.php', // Sibling plugin.
                 SEOPRESS_PLUGIN_DIR_PATH . 'wp-seopress-pro/seopress-pro.php', // Bundled inside the core plugin.
+                trailingslashit( dirname( SEOPRESS_PLUGIN_DIR_PATH ) ) . 'wp-seopress-pro/seopress-pro.php', // Sibling plugin.
         );
 
         $pro_main_file = '';
