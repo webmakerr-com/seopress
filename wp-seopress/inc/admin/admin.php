@@ -185,29 +185,68 @@ class SEOPressOptions {
 	/**
 	 * Register submenus
 	 */
-	private function register_submenus() {
-		$submenus = array(
-			array( __( 'Dashboard', 'wp-seopress' ), 'menu', 'seopress-option', 'create_admin_page' ),
-			array( __( 'Titles & Metas', 'wp-seopress' ), PagesAdmin::TITLE_METAS, 'seopress-titles', 'seopress_titles_page' ),
-			array( __( 'XML - HTML Sitemap', 'wp-seopress' ), PagesAdmin::XML_HTML_SITEMAP, 'seopress-xml-sitemap', 'seopress_xml_sitemap_page' ),
+        private function register_submenus() {
+                $submenus = array(
+                        array( __( 'Dashboard', 'wp-seopress' ), 'menu', 'seopress-option', 'create_admin_page' ),
+                        array( __( 'Titles & Metas', 'wp-seopress' ), PagesAdmin::TITLE_METAS, 'seopress-titles', 'seopress_titles_page' ),
+                        array( __( 'XML - HTML Sitemap', 'wp-seopress' ), PagesAdmin::XML_HTML_SITEMAP, 'seopress-xml-sitemap', 'seopress_xml_sitemap_page' ),
 			array( __( 'Social Networks', 'wp-seopress' ), PagesAdmin::SOCIAL_NETWORKS, 'seopress-social', 'seopress_social_page' ),
 			array( __( 'Analytics', 'wp-seopress' ), PagesAdmin::ANALYTICS, 'seopress-google-analytics', 'seopress_google_analytics_page' ),
 			array( __( 'Instant Indexing', 'wp-seopress' ), PagesAdmin::INSTANT_INDEXING, 'seopress-instant-indexing', 'seopress_instant_indexing_page' ),
-			array( __( 'Advanced', 'wp-seopress' ), PagesAdmin::ADVANCED, 'seopress-advanced', 'seopress_advanced_page' ),
-			array( __( 'Tools', 'wp-seopress' ), PagesAdmin::TOOLS, 'seopress-import-export', 'seopress_import_export_page' ),
-		);
+                        array( __( 'Advanced', 'wp-seopress' ), PagesAdmin::ADVANCED, 'seopress-advanced', 'seopress_advanced_page' ),
+                        array( __( 'Tools', 'wp-seopress' ), PagesAdmin::TOOLS, 'seopress-import-export', 'seopress_import_export_page' ),
+                );
 
-		foreach ( $submenus as $submenu ) {
-			add_submenu_page(
+                foreach ( $submenus as $submenu ) {
+                        add_submenu_page(
 				'seopress-option',
 				$submenu[0],
 				$submenu[0],
-				seopress_capability( 'manage_options', $submenu[1] ),
-				$submenu[2],
-				array( $this, $submenu[3] )
-			);
-		}
-	}
+                                seopress_capability( 'manage_options', $submenu[1] ),
+                                $submenu[2],
+                                array( $this, $submenu[3] )
+                        );
+                }
+
+                if ( ! defined( 'SEOPRESS_PRO_VERSION' ) ) {
+                        $this->register_pro_submenus();
+                }
+        }
+
+        /**
+         * Register PRO feature submenus when the standalone PRO plugin is not active.
+         */
+        private function register_pro_submenus() {
+                if ( function_exists( 'seopress_get_toggle_option' ) && '1' === seopress_get_toggle_option( 'rich-snippets' ) ) {
+                        add_submenu_page(
+                                'seopress-option',
+                                __( 'Schemas', 'wp-seopress' ),
+                                __( 'Schemas', 'wp-seopress' ),
+                                seopress_capability( 'edit_schemas', 'menu' ),
+                                'edit.php?post_type=seopress_schemas'
+                        );
+                }
+
+                if ( function_exists( 'seopress_get_toggle_option' ) && '1' === seopress_get_toggle_option( '404' ) ) {
+                        add_submenu_page(
+                                'seopress-option',
+                                __( 'Redirections', 'wp-seopress' ),
+                                __( 'Redirections', 'wp-seopress' ),
+                                seopress_capability( 'edit_redirections', 'menu' ),
+                                'edit.php?post_type=seopress_404'
+                        );
+                }
+
+                if ( function_exists( 'seopress_get_toggle_option' ) && '1' === seopress_get_toggle_option( 'bot' ) ) {
+                        add_submenu_page(
+                                'seopress-option',
+                                __( 'Broken links', 'wp-seopress' ),
+                                __( 'Broken links', 'wp-seopress' ),
+                                seopress_capability( 'manage_options', 'menu' ),
+                                'edit.php?post_type=seopress_bot'
+                        );
+                }
+        }
 
 	/**
 	 * Handle white label
