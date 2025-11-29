@@ -56,13 +56,74 @@ use SEOPress\Core\Kernel;
 require_once SEOPRESS_PLUGIN_DIR_PATH . 'seopress-autoload.php';
 
 if ( file_exists( SEOPRESS_PLUGIN_DIR_PATH . 'vendor/autoload.php' ) ) {
-	require_once SEOPRESS_PLUGIN_DIR_PATH . 'seopress-functions.php';
+        require_once SEOPRESS_PLUGIN_DIR_PATH . 'seopress-functions.php';
 }
+
+/**
+ * Mark the bundled PRO plugin as active for WordPress helpers.
+ *
+ * @param array $plugins
+ *
+ * @return array
+ */
+function seopress_flag_pro_plugin_active( $plugins ) {
+        if ( ! is_array( $plugins ) ) {
+                $plugins = array();
+        }
+
+        if ( isset( $plugins['wp-seopress-pro/seopress-pro.php'] ) || in_array( 'wp-seopress-pro/seopress-pro.php', $plugins, true ) ) {
+                return $plugins;
+        }
+
+        if ( seopress_is_associative_array( $plugins ) ) {
+                $plugins['wp-seopress-pro/seopress-pro.php'] = time();
+
+                return $plugins;
+        }
+
+        $plugins[] = 'wp-seopress-pro/seopress-pro.php';
+
+        return $plugins;
+}
+
+/**
+ * Determine if an array is associative.
+ *
+ * @param array $array
+ *
+ * @return bool
+ */
+function seopress_is_associative_array( $array ) {
+        return array_keys( $array ) !== range( 0, count( $array ) - 1 );
+}
+
+/**
+ * Ensure PRO features are available when the PRO package is bundled.
+ *
+ * @return void
+ */
+function seopress_bootstrap_bundled_pro() {
+        if ( defined( 'SEOPRESS_PRO_VERSION' ) ) {
+                return;
+        }
+
+        $pro_main_file = trailingslashit( dirname( SEOPRESS_PLUGIN_DIR_PATH ) ) . 'wp-seopress-pro/seopress-pro.php';
+
+        if ( ! file_exists( $pro_main_file ) ) {
+                return;
+        }
+
+        add_filter( 'option_active_plugins', 'seopress_flag_pro_plugin_active' );
+        add_filter( 'site_option_active_sitewide_plugins', 'seopress_flag_pro_plugin_active' );
+
+        include_once $pro_main_file;
+}
+seopress_bootstrap_bundled_pro();
 
 // Initialize the kernel if the vendor autoload exists.
 if ( file_exists( SEOPRESS_PLUGIN_DIR_PATH . 'vendor/autoload.php' ) ) {
-	Kernel::execute(
-		array(
+        Kernel::execute(
+                array(
 			'file'      => __FILE__,
 			'slug'      => 'wp-seopress',
 			'main_file' => 'seopress',
@@ -646,16 +707,16 @@ function seopress_plugin_action_links( $links, $file ) {
 		$website_link  = '<a href="https://www.seopress.org/support/" target="_blank">' . __( 'Docs', 'wp-seopress' ) . '</a>';
 
 		// Add "GO PRO!" link for non-PRO users.
-		if ( ! is_plugin_active( 'wp-seopress-pro/seopress-pro.php' ) ) {
-			$pro_link = '<a href="https://www.seopress.org/seopress-pro/" style="color:red;font-weight:bold" target="_blank">' . __( 'GO PRO!', 'wp-seopress' ) . '</a>';
-			array_unshift( $links, $pro_link );
-		}
+                if ( ! seopress_is_pro_active() ) {
+                        $pro_link = '<a href="https://www.seopress.org/seopress-pro/" style="color:red;font-weight:bold" target="_blank">' . __( 'GO PRO!', 'wp-seopress' ) . '</a>';
+                        array_unshift( $links, $pro_link );
+                }
 
-		// Remove "Deactivate" link if PRO plugins are active.
-		$is_pro_active = is_plugin_active( 'wp-seopress-pro/seopress-pro.php' );
-		if ( $is_pro_active && isset( $links['deactivate'] ) ) {
-			unset( $links['deactivate'] );
-		}
+                // Remove "Deactivate" link if PRO plugins are active.
+                $is_pro_active = seopress_is_pro_active();
+                if ( $is_pro_active && isset( $links['deactivate'] ) ) {
+                        unset( $links['deactivate'] );
+                }
 
 		// Determine white-label behavior.
 		$use_white_label_links = function_exists( 'seopress_pro_get_service' ) &&

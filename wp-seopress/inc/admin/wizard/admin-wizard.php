@@ -63,7 +63,7 @@ class SEOPRESS_Admin_Setup_Wizard {
 			remove_all_actions( 'all_admin_notices' );
 
 			$this->seo_title = 'SEOPress';
-			if ( is_plugin_active( 'wp-seopress-pro/seopress-pro.php' ) ) {
+                    if ( seopress_is_pro_active() ) {
 				if ( method_exists( seopress_get_service( 'ToggleOption' ), 'getToggleWhiteLabel' ) && '1' === seopress_get_service( 'ToggleOption' )->getToggleWhiteLabel() ) {
 					$this->seo_title = function_exists( 'seopress_pro_get_service' ) && method_exists( seopress_pro_get_service( 'OptionPro' ), 'getWhiteLabelListTitle' ) && seopress_pro_get_service( 'OptionPro' )->getWhiteLabelListTitle() ? seopress_pro_get_service( 'OptionPro' )->getWhiteLabelListTitle() : 'SEOPress';
 				}

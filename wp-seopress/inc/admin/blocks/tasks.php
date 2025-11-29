@@ -8,7 +8,7 @@
 
 defined( 'ABSPATH' ) || exit( 'Please don&rsquo;t call the plugin directly. Thanks :)' );
 
-if ( is_plugin_active( 'wp-seopress-pro/seopress-pro.php' ) ) {
+if ( seopress_is_pro_active() ) {
 	if ( method_exists( seopress_get_service( 'ToggleOption' ), 'getToggleWhiteLabel' ) && '1' === seopress_get_service( 'ToggleOption' )->getToggleWhiteLabel() ) {
 		return;
 	}

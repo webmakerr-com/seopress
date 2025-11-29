@@ -335,7 +335,7 @@ class Document_Settings_Section {
 			}
 		}
 
-		if ( is_plugin_active( 'wp-seopress-pro/seopress-pro.php' ) ) {
+            if ( seopress_is_pro_active() ) {
 			$document->add_control(
 				'_seopress_robots_breadcrumbs',
 				array(
@@ -603,7 +603,7 @@ class Document_Settings_Section {
 			)
 		);
 
-		if ( is_plugin_active( 'wp-seopress-pro/seopress-pro.php' ) ) {
+            if ( seopress_is_pro_active() ) {
 			$document->add_control(
 				'seopress_google_suggest_kw',
 				array(

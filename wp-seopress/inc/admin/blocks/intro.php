@@ -22,7 +22,7 @@ if ( defined( 'SEOPRESS_WL_ADMIN_HEADER' ) && SEOPRESS_WL_ADMIN_HEADER === false
 		<h1>
 		<?php
 			$seo_title = 'SEOPress';
-		if ( is_plugin_active( 'wp-seopress-pro/seopress-pro.php' ) ) {
+            if ( seopress_is_pro_active() ) {
 			if ( method_exists( seopress_get_service( 'ToggleOption' ), 'getToggleWhiteLabel' ) && '1' === seopress_get_service( 'ToggleOption' )->getToggleWhiteLabel() ) {
 				$seo_title = function_exists( 'seopress_pro_get_service' ) && method_exists( seopress_pro_get_service( 'OptionPro' ), 'getWhiteLabelListTitle' ) && seopress_pro_get_service( 'OptionPro' )->getWhiteLabelListTitle() ? seopress_pro_get_service( 'OptionPro' )->getWhiteLabelListTitle() : 'SEOPress';
 			}
