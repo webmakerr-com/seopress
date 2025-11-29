@@ -36,33 +36,51 @@ abstract class Kernel {
 		'root'      => null,
 	);
 
-	/**
-	 * The set container function.
-	 *
-	 * @param ManageContainer $container The container.
-	 *
-	 * @return void
-	 */
-	public static function setContainer( ManageContainer $container ) { // phpcs:ignore -- TODO: check if method is outside this class before renaming.
-		self::$container = self::getDefaultContainer();
-	}
+        /**
+         * The set container function.
+         *
+         * @param ManageContainer $container The container.
+         *
+         * @return void
+         */
+        public static function setContainer( ManageContainer $container ) { // phpcs:ignore -- TODO: check if method is outside this class before renaming.
+                self::$container = self::getDefaultContainer();
+        }
 
-	/**
-	 * The get default container function.
-	 *
-	 * @return ContainerSeopress
-	 */
-	protected static function getDefaultContainer() { // phpcs:ignore -- TODO: check if method is outside this class before renaming.
-		return new ContainerSeopress();
-	}
+        /**
+         * The get default container function.
+         *
+         * @return ContainerSeopress
+         */
+        protected static function getDefaultContainer() { // phpcs:ignore -- TODO: check if method is outside this class before renaming.
+                return new ContainerSeopress();
+        }
 
-	public static function getContainer() { // phpcs:ignore -- TODO: check if method is outside this class before renaming.
-		if ( null === self::$container ) {
-			self::$container = self::getDefaultContainer();
-		}
+        /**
+         * Namespace prefix used when building class names.
+         *
+         * @return string
+         */
+        protected static function getNamespacePrefix() {
+                return '\\SEOPress\\';
+        }
 
-		return self::$container;
-	}
+        /**
+         * Priority used when wiring plugin loaded hooks.
+         *
+         * @return int
+         */
+        protected static function getPluginsLoadedPriority() {
+                return 10;
+        }
+
+        public static function getContainer() { // phpcs:ignore -- TODO: check if method is outside this class before renaming.
+                if ( null === self::$container ) {
+                        self::$container = self::getDefaultContainer();
+                }
+
+                return self::$container;
+        }
 
 	/**
 	 * The handle hooks plugin function.
@@ -173,7 +191,7 @@ abstract class Kernel {
 					continue;
 				}
 
-				$data = '\\SEOPress\\' . $namespace . str_replace( '.php', '', $filename );
+                                $data = static::getNamespacePrefix() . $namespace . str_replace( '.php', '', $filename );
 
 				switch ( $type ) {
 					case 'services':
@@ -201,7 +219,7 @@ abstract class Kernel {
 
 		self::buildContainer();
 
-		add_action( 'plugins_loaded', array( __CLASS__, 'handleHooksPlugin' ) );
+                add_action( 'plugins_loaded', array( __CLASS__, 'handleHooksPlugin' ), static::getPluginsLoadedPriority() );
 		register_activation_hook( $data['file'], array( __CLASS__, 'handleHooksPlugin' ) );
 		register_deactivation_hook( $data['file'], array( __CLASS__, 'handleHooksPlugin' ) );
 	}

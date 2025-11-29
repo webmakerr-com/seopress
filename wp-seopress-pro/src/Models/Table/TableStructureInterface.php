@@ -5,12 +5,4 @@ namespace SEOPressPro\Models\Table;
 defined( 'ABSPATH' ) || exit;
 
 
-interface TableStructureInterface {
-
-
-    /**
-     * @return array
-     */
-	public function getColumns();
-
-}
+interface TableStructureInterface extends \SEOPress\Models\Table\TableStructureInterface {}

@@ -12,20 +12,36 @@ use SEOPress\Models\Table\TableColumnInterface;
  */
 class QueryCreateTable {
 
+        /**
+         * QueryExistTable helper.
+         *
+         * @var QueryExistTable
+         */
+        protected $query_exist_table;
 
-	public function constructColumn( TableColumnInterface $column ) { // phpcs:ignore -- TODO: check if method is outside this class before renaming.
-		$line = sprintf( '%s %s', $column->getName(), $column->getType() );
-		if ( $column->getPrimaryKey() ) {
-			$line .= ' NOT NULL AUTO_INCREMENT';
-		} else {
-			$line .= ' DEFAULT NULL';
-		}
+        public function __construct( QueryExistTable $query_exist_table = null ) {
+                $this->query_exist_table = $query_exist_table ?: new QueryExistTable();
+        }
+
+
+        public function constructColumn( TableColumnInterface $column, $is_alter = false ) { // phpcs:ignore -- TODO: check if method is outside this class before renaming.
+                $line = sprintf( '%s %s', $column->getName(), $column->getType() );
+                if ( $column->getPrimaryKey() && ! $is_alter ) {
+                        $line .= ' NOT NULL AUTO_INCREMENT';
+                } else {
+                        $default_value = $column->getDefaultValue();
+                        if ( null !== $default_value ) {
+                                $line .= sprintf( " DEFAULT '%s'", $default_value );
+                        } else {
+                                $line .= ' DEFAULT NULL';
+                        }
+                }
 
 		return $line;
 	}
 
-	public function getPrimaryKey( $columns ) { // phpcs:ignore -- TODO: check if method is outside this class before renaming.
-		$value = '';
+        public function getPrimaryKey( $columns ) { // phpcs:ignore -- TODO: check if method is outside this class before renaming.
+                $value = '';
 		foreach ( $columns as $key => $column ) {
 			if ( ! $column->getPrimaryKey() ) {
 				continue;
@@ -43,8 +59,43 @@ class QueryCreateTable {
 			$value .= ')';
 		}
 
-		return $value;
-	}
+                return $value;
+        }
+
+        /**
+         * Add missing columns to an existing table.
+         *
+         * @param TableInterface $table The table definition.
+         *
+         * @return bool|void
+         */
+        public function addMissingColumns( TableInterface $table ) {
+                global $wpdb;
+
+                $new_columns = array();
+                $columns     = $table->getColumns();
+                $table_name  = $wpdb->prefix . $table->getName();
+
+                foreach ( $columns as $column ) {
+                        if ( ! $this->query_exist_table->columnExists( $table, $column ) ) {
+                                $new_columns[] = $this->constructColumn( $column, true );
+                        }
+                }
+
+                if ( empty( $new_columns ) ) {
+                        return true;
+                }
+
+                $sql = "ALTER TABLE {$table_name} ADD (" . implode( ', ', $new_columns ) . ')';
+
+                try {
+                        $wpdb->query( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+                } catch ( \Exception $e ) {
+                        return false;
+                }
+
+                return true;
+        }
 
 	/**
 	 * The create function.

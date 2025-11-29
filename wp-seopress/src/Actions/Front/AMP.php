@@ -12,20 +12,14 @@ class AMP implements ExecuteHooksFrontend {
 	/**
 	 * The AMP hooks.
 	 *
-	 * @since 4.4.0
-	 *
-	 * @return void
-	 */
-	public function hooks() {
-		if (
-			is_plugin_active( 'wp-seopress-pro/seopress-pro.php' )
-			&& defined( 'SEOPRESS_PRO_VERSION' ) && version_compare( SEOPRESS_PRO_VERSION, '5.4', '<' ) ) { // Quick fix to prevent fatal error for SEOPress < 5.4.
-			return;
-		}
-
-		add_action( 'wp', array( $this, 'amp_compatibility_wp' ), 0 );
-		add_action( 'wp_head', array( $this, 'amp_compatibility_wp_head' ), 0 );
-	}
+        * @since 4.4.0
+         *
+         * @return void
+         */
+        public function hooks() {
+                add_action( 'wp', array( $this, 'amp_compatibility_wp' ), 0 );
+                add_action( 'wp_head', array( $this, 'amp_compatibility_wp_head' ), 0 );
+        }
 
 	/**
 	 * AMP Compatibility - wp action hook.

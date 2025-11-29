@@ -12,7 +12,7 @@ class Redirections implements ExecuteHooks {
         private $current_user;
 
         public function hooks() {
-                if ( defined( 'SEOPRESS_PRO_VERSION' ) ) {
+                if ( ! $this->shouldRegister() ) {
                         return;
                 }
 
@@ -137,5 +137,14 @@ class Redirections implements ExecuteHooks {
                 }
 
                 wp_send_json_success( $response );
+        }
+
+        /**
+         * Determine if routes should be registered.
+         *
+         * @return bool
+         */
+        protected function shouldRegister() {
+                return ! defined( 'SEOPRESS_PRO_VERSION' );
         }
 }
