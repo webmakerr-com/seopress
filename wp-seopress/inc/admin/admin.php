@@ -10,6 +10,29 @@ defined( 'ABSPATH' ) || exit( 'Please don&rsquo;t call the plugin directly. Than
 use SEOPress\Helpers\PagesAdmin;
 
 /**
+ * Sanitize the PRO license value.
+ *
+ * Mirrors the behavior from the PRO add-on so stored keys remain consistent
+ * when the license screen is surfaced in the core plugin.
+ *
+ * @param string $new License value provided by the user.
+ * @return string Sanitized license value.
+ */
+function seopress_sanitize_pro_license( $new ) {
+        $old = get_option( 'seopress_pro_license_key' );
+
+        if ( $old && $old !== $new ) {
+                delete_option( 'seopress_pro_license_status' );
+        }
+
+        if ( '********************************' === $new ) {
+                return $old;
+        }
+
+        return $new;
+}
+
+/**
  * SEOPress options
  */
 class SEOPressOptions {
@@ -190,9 +213,9 @@ class SEOPressOptions {
                         array( __( 'Dashboard', 'wp-seopress' ), 'menu', 'seopress-option', 'create_admin_page' ),
                         array( __( 'Titles & Metas', 'wp-seopress' ), PagesAdmin::TITLE_METAS, 'seopress-titles', 'seopress_titles_page' ),
                         array( __( 'XML - HTML Sitemap', 'wp-seopress' ), PagesAdmin::XML_HTML_SITEMAP, 'seopress-xml-sitemap', 'seopress_xml_sitemap_page' ),
-			array( __( 'Social Networks', 'wp-seopress' ), PagesAdmin::SOCIAL_NETWORKS, 'seopress-social', 'seopress_social_page' ),
-			array( __( 'Analytics', 'wp-seopress' ), PagesAdmin::ANALYTICS, 'seopress-google-analytics', 'seopress_google_analytics_page' ),
-			array( __( 'Instant Indexing', 'wp-seopress' ), PagesAdmin::INSTANT_INDEXING, 'seopress-instant-indexing', 'seopress_instant_indexing_page' ),
+                        array( __( 'Social Networks', 'wp-seopress' ), PagesAdmin::SOCIAL_NETWORKS, 'seopress-social', 'seopress_social_page' ),
+                        array( __( 'Analytics', 'wp-seopress' ), PagesAdmin::ANALYTICS, 'seopress-google-analytics', 'seopress_google_analytics_page' ),
+                        array( __( 'Instant Indexing', 'wp-seopress' ), PagesAdmin::INSTANT_INDEXING, 'seopress-instant-indexing', 'seopress_instant_indexing_page' ),
                         array( __( 'Advanced', 'wp-seopress' ), PagesAdmin::ADVANCED, 'seopress-advanced', 'seopress_advanced_page' ),
                         array( __( 'Tools', 'wp-seopress' ), PagesAdmin::TOOLS, 'seopress-import-export', 'seopress_import_export_page' ),
                 );
@@ -209,6 +232,24 @@ class SEOPressOptions {
                 }
 
                 if ( ! defined( 'SEOPRESS_PRO_VERSION' ) ) {
+                        add_submenu_page(
+                                'seopress-option',
+                                __( 'PRO', 'wp-seopress' ),
+                                __( 'PRO', 'wp-seopress' ),
+                                seopress_capability( 'manage_options', 'pro' ),
+                                'seopress-pro-page',
+                                array( $this, 'seopress_pro_page' )
+                        );
+
+                        add_submenu_page(
+                                'seopress-option',
+                                __( 'License', 'wp-seopress' ),
+                                __( 'License', 'wp-seopress' ),
+                                seopress_capability( 'manage_options', 'menu' ),
+                                'seopress-license',
+                                array( $this, 'seopress_license_page' )
+                        );
+
                         $this->register_pro_submenus();
                 }
         }
@@ -313,9 +354,39 @@ class SEOPressOptions {
 	/**
 	 * SEOPress import export page
 	 */
-	public function seopress_import_export_page() {
-		$this->load_admin_page( 'Tools.php' );
-	}
+        public function seopress_import_export_page() {
+                $this->load_admin_page( 'Tools.php' );
+        }
+
+        /**
+         * SEOPress PRO features page
+         */
+        public function seopress_pro_page() {
+                $fallback_page = plugin_dir_path( __FILE__ ) . '/admin-pages/Pro.php';
+
+                if ( file_exists( $fallback_page ) ) {
+                        require $fallback_page;
+                        return;
+                }
+
+                echo '<div class="wrap"><h1>' . esc_html__( 'SEOPress PRO', 'wp-seopress' ) . '</h1>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                echo '<p>' . esc_html__( 'PRO settings are currently unavailable because no template could be loaded.', 'wp-seopress' ) . '</p></div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+        }
+
+        /**
+         * SEOPress license page
+         */
+        public function seopress_license_page() {
+                $license_page = plugin_dir_path( __FILE__ ) . '/admin-pages/License.php';
+
+                if ( file_exists( $license_page ) ) {
+                        require $license_page;
+                        return;
+                }
+
+                echo '<div class="wrap"><h1>' . esc_html__( 'License', 'wp-seopress' ) . '</h1>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+                echo '<p>' . esc_html__( 'The license screen could not be loaded.', 'wp-seopress' ) . '</p></div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+        }
 
 	/**
 	 * Load SEOPress admin page
@@ -331,22 +402,27 @@ class SEOPressOptions {
 	 */
 	public function page_init() {
 		// Array of settings to register.
-		$settings = array(
-			array( 'seopress_option_group', 'seopress_option_name' ),
-			array( 'seopress_titles_option_group', 'seopress_titles_option_name' ),
-			array( 'seopress_xml_sitemap_option_group', 'seopress_xml_sitemap_option_name' ),
-			array( 'seopress_social_option_group', 'seopress_social_option_name' ),
-			array( 'seopress_google_analytics_option_group', 'seopress_google_analytics_option_name' ),
-			array( 'seopress_advanced_option_group', 'seopress_advanced_option_name' ),
-			array( 'seopress_tools_option_group', 'seopress_tools_option_name' ),
-			array( 'seopress_import_export_option_group', 'seopress_import_export_option_name' ),
-			array( 'seopress_instant_indexing_option_group', 'seopress_instant_indexing_option_name' ),
-		);
+                $settings = array(
+                        array( 'seopress_option_group', 'seopress_option_name' ),
+                        array( 'seopress_titles_option_group', 'seopress_titles_option_name' ),
+                        array( 'seopress_xml_sitemap_option_group', 'seopress_xml_sitemap_option_name' ),
+                        array( 'seopress_social_option_group', 'seopress_social_option_name' ),
+                        array( 'seopress_google_analytics_option_group', 'seopress_google_analytics_option_name' ),
+                        array( 'seopress_advanced_option_group', 'seopress_advanced_option_name' ),
+                        array( 'seopress_tools_option_group', 'seopress_tools_option_name' ),
+                        array( 'seopress_import_export_option_group', 'seopress_import_export_option_name' ),
+                        array( 'seopress_instant_indexing_option_group', 'seopress_instant_indexing_option_name' ),
+                        array( 'seopress_license', 'seopress_pro_license_key', 'seopress_sanitize_pro_license' ),
+                );
 
 		// Register settings dynamically.
-		foreach ( $settings as [$group, $name] ) {
-			register_setting( $group, $name, array( $this, 'sanitize' ) );
-		}
+                foreach ( $settings as $setting_args ) {
+                        $group     = $setting_args[0];
+                        $name      = $setting_args[1];
+                        $sanitize  = isset( $setting_args[2] ) ? $setting_args[2] : array( $this, 'sanitize' );
+
+                        register_setting( $group, $name, $sanitize );
+                }
 
 		// Array of files to include.
 		$setting_files = array(
