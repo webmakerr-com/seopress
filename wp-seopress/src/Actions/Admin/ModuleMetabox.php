@@ -121,7 +121,7 @@ class ModuleMetabox implements ExecuteHooks {
 			array(
 				'SEOPRESS_URL_PUBLIC'       => SEOPRESS_URL_PUBLIC,
 				'SEOPRESS_URL_ASSETS'       => SEOPRESS_URL_ASSETS,
-				'SEOPRESS_PRO_IS_ACTIVATED' => is_plugin_active( 'wp-seopress-pro/seopress-pro.php' ) ? true : false,
+                            'SEOPRESS_PRO_IS_ACTIVATED' => seopress_is_pro_active(),
 				'SITENAME'                  => get_bloginfo( 'name' ),
 				'SITEURL'                   => site_url(),
 				'ADMIN_URL_TITLES'          => admin_url( 'admin.php?page=seopress-titles#tab=tab_seopress_titles_single' ),

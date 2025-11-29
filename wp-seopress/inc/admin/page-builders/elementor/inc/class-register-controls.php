@@ -35,7 +35,7 @@ class Register_Controls {
 		$controls_manager->register( new \WPSeoPressElementorAddon\Controls\Social_Preview_Control() );
 		$controls_manager->register( new \WPSeoPressElementorAddon\Controls\Text_Letter_Counter_Control() );
 		$controls_manager->register( new \WPSeoPressElementorAddon\Controls\Content_Analysis_Control() );
-		if ( is_plugin_active( 'wp-seopress-pro/seopress-pro.php' ) ) {
+            if ( seopress_is_pro_active() ) {
 			$controls_manager->register( new \WPSeoPressElementorAddon\Controls\Google_Suggestions_Control() );
 		}
 	}

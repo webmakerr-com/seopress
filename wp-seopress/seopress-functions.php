@@ -11,6 +11,23 @@ defined( 'ABSPATH' ) || exit( 'Please don&rsquo;t call the plugin directly. Than
 use SEOPress\Core\Kernel;
 
 /**
+ * Check if SEOPress PRO is available.
+ *
+ * @return bool
+ */
+function seopress_is_pro_active() {
+        if ( defined( 'SEOPRESS_PRO_VERSION' ) ) {
+                return true;
+        }
+
+        if ( ! function_exists( 'is_plugin_active' ) ) {
+                include_once ABSPATH . 'wp-admin/includes/plugin.php';
+        }
+
+        return function_exists( 'is_plugin_active' ) && is_plugin_active( 'wp-seopress-pro/seopress-pro.php' );
+}
+
+/**
  * Get a service.
  *
  * @param string $service
@@ -630,11 +647,9 @@ function seopress_remove_other_notices() {
 		remove_all_actions( 'user_admin_notices' );
 		remove_all_actions( 'all_admin_notices' );
 		add_action( 'admin_notices', 'seopress_admin_notices' );
-		if ( is_plugin_active( 'wp-seopress-pro/seopress-pro.php' ) ) {
-			if ( version_compare( SEOPRESS_PRO_VERSION, '6.4', '>=' ) ) {
-				add_action( 'admin_notices', 'seopress_pro_admin_notices' );
-			}
-		}
+                if ( seopress_is_pro_active() && defined( 'SEOPRESS_PRO_VERSION' ) && version_compare( SEOPRESS_PRO_VERSION, '6.4', '>=' ) ) {
+                        add_action( 'admin_notices', 'seopress_pro_admin_notices' );
+                }
 		if ( is_plugin_active( 'wp-seopress-insights/seopress-insights.php' ) ) {
 			if ( version_compare( SEOPRESS_INSIGHTS_VERSION, '1.8.1', '>=' ) ) {
 				add_action( 'admin_notices', 'seopress_insights_notices' );

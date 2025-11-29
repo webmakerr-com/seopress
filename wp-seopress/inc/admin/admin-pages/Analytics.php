@@ -49,7 +49,7 @@ if ( function_exists( 'seopress_admin_header' ) ) {
 			<?php do_settings_sections( 'seopress-settings-admin-google-analytics-enable' ); ?>
 			<?php do_settings_sections( 'seopress-settings-admin-google-analytics-events' ); ?>
 			<?php
-			if ( is_plugin_active( 'wp-seopress-pro/seopress-pro.php' ) ) {
+                    if ( seopress_is_pro_active() ) {
 				do_settings_sections( 'seopress-settings-admin-google-analytics-ecommerce' );
 				do_settings_sections( 'seopress-settings-admin-google-analytics-dashboard' );
 			}

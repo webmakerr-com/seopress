@@ -121,7 +121,7 @@ class GetContent {
 			$analyzes['schemas']['impact'] = 'medium';
 			$analyzes['schemas']['desc']   = '<p>' . __( 'No schemas found in the source code of this page. Get rich snippets in Google Search results and improve your visibility by adding structured data types (schemas) to your page.', 'wp-seopress' ) . '</p>';
 
-			if ( ! is_plugin_active( 'wp-seopress-pro/seopress-pro.php' ) ) {
+                    if ( ! seopress_is_pro_active() ) {
 				$analyzes['schemas']['desc'] .= '<p><a class="seopress-help" href="' . esc_url( $docs['schemas']['feature'] ) . '" target="_blank" class="components-button is-link">' . __( 'Get SEOPress PRO to add schemas now', 'wp-seopress' ) . '</a></p>';
 			} else {
 				$analyzes['schemas']['desc'] .= '<p><a class="seopress-help" href="' . esc_url( $docs['schemas']['ebook'] ) . '" target="_blank" class="components-button is-link">' . __( 'Learn more', 'wp-seopress' ) . '</a></p>';

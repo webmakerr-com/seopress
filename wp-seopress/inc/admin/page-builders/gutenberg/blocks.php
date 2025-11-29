@@ -72,7 +72,7 @@ function seopress_register_blocks() {
 				),
 				'isProActive'   => array(
 					'type'    => 'boolean',
-					'default' => is_plugin_active( 'wp-seopress-pro/seopress-pro.php' ),
+                                    'default' => seopress_is_pro_active(),
 				),
 			),
 		)

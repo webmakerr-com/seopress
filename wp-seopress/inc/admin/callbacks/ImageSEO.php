@@ -139,7 +139,7 @@ function seopress_advanced_advanced_image_auto_alt_editor_callback() {
 </label>
 
 	<?php
-	if ( ! is_plugin_active( 'wp-seopress-pro/seopress-pro.php' ) ) {
+    if ( ! seopress_is_pro_active() ) {
 		if ( defined( 'SEOPRESS_WL_ADMIN_HEADER' ) && SEOPRESS_WL_ADMIN_HEADER === false ) {
 		} else {
 			echo '<p class="seopress-help description"><a href="' . esc_url( $docs['ai']['introduction'] ) . '" target="_blank">' . esc_attr__( 'Our PRO version can optimize your image ALT texts for Search Engines using AI and Machine Learning.', 'wp-seopress' ) . '</a><span class="dashicons dashicons-external"></span></p>';
