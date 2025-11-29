@@ -7786,3 +7786,205 @@ msgstr ""
 msgctxt "block description"
 msgid "Display an HTML sitemap"
 msgstr ""
+#: inc/admin/redirections/redirections.php:32
+#: inc/admin/redirections/redirections.php:34
+msgid "Redirections"
+msgstr ""
+
+#: inc/admin/redirections/redirections.php:33
+msgid "Redirection"
+msgstr ""
+
+#: inc/admin/redirections/redirections.php:36
+msgid "All redirections"
+msgstr ""
+
+#: inc/admin/redirections/redirections.php:37
+msgid "Add redirection"
+msgstr ""
+
+#: inc/admin/redirections/redirections.php:38
+msgid "Add New redirection"
+msgstr ""
+
+#: inc/admin/redirections/redirections.php:39
+msgid "New redirection"
+msgstr ""
+
+#: inc/admin/redirections/redirections.php:40
+msgid "Edit redirection"
+msgstr ""
+
+#: inc/admin/redirections/redirections.php:41
+msgid "Update redirection"
+msgstr ""
+
+#: inc/admin/redirections/redirections.php:42
+msgid "View redirection"
+msgstr ""
+
+#: inc/admin/redirections/redirections.php:43
+msgid "Search redirection"
+msgstr ""
+
+#: inc/admin/redirections/redirections.php:51
+msgid "Redirections and 404 monitoring"
+msgstr ""
+
+#: inc/admin/redirections/redirections.php:46
+msgid "Redirections list"
+msgstr ""
+
+#: inc/admin/redirections/redirections.php:47
+msgid "Redirections list navigation"
+msgstr ""
+
+#: inc/admin/redirections/redirections.php:125
+msgid "Categories"
+msgstr ""
+
+#: inc/admin/redirections/redirections.php:126
+msgid "Category"
+msgstr ""
+
+#: inc/admin/redirections/redirections.php:128
+msgid "All Categories"
+msgstr ""
+
+#: inc/admin/redirections/redirections.php:129
+msgid "New Category Name"
+msgstr ""
+
+#: inc/admin/redirections/redirections.php:130
+msgid "Add New Category"
+msgstr ""
+
+#: inc/admin/redirections/redirections.php:131
+msgid "Edit Category"
+msgstr ""
+
+#: inc/admin/redirections/redirections.php:132
+msgid "Update Category"
+msgstr ""
+
+#: inc/admin/redirections/redirections.php:133
+msgid "Search Category"
+msgstr ""
+
+#: inc/admin/redirections/redirections.php:159
+msgid "Enter the request URI (without the domain)"
+msgstr ""
+
+#: inc/admin/schemas/schemas.php:27
+#: inc/admin/schemas/schemas.php:29
+msgid "Schemas"
+msgstr ""
+
+#: inc/admin/schemas/schemas.php:28
+msgid "Schema"
+msgstr ""
+
+#: inc/admin/schemas/schemas.php:31
+msgid "All schemas"
+msgstr ""
+
+#: inc/admin/schemas/schemas.php:32
+msgid "Add schema"
+msgstr ""
+
+#: inc/admin/schemas/schemas.php:33
+msgid "Add New schema"
+msgstr ""
+
+#: inc/admin/schemas/schemas.php:34
+msgid "New schema"
+msgstr ""
+
+#: inc/admin/schemas/schemas.php:35
+msgid "Edit schema"
+msgstr ""
+
+#: inc/admin/schemas/schemas.php:36
+msgid "Update schema"
+msgstr ""
+
+#: inc/admin/schemas/schemas.php:37
+msgid "View schema"
+msgstr ""
+
+#: inc/admin/schemas/schemas.php:38
+msgid "Search schema"
+msgstr ""
+
+#: inc/admin/schemas/schemas.php:46
+msgid "List of schemas"
+msgstr ""
+
+#: inc/admin/schemas/schemas.php:41
+msgid "Schemas list"
+msgstr ""
+
+#: inc/admin/schemas/schemas.php:42
+msgid "Schemas list navigation"
+msgstr ""
+
+#: inc/admin/schemas/schemas.php:119
+msgid "Enter the name of your schema"
+msgstr ""
+
+#: inc/admin/bot/bot.php:26
+#: inc/admin/bot/bot.php:28
+msgid "Broken links"
+msgstr ""
+
+#: inc/admin/bot/bot.php:27
+msgid "Broken link"
+msgstr ""
+
+#: inc/admin/bot/bot.php:30
+msgid "All broken links"
+msgstr ""
+
+#: inc/admin/bot/bot.php:31
+msgid "Add link"
+msgstr ""
+
+#: inc/admin/bot/bot.php:32
+msgid "Add New link"
+msgstr ""
+
+#: inc/admin/bot/bot.php:33
+msgid "New link"
+msgstr ""
+
+#: inc/admin/bot/bot.php:34
+msgid "Edit link"
+msgstr ""
+
+#: inc/admin/bot/bot.php:35
+msgid "Update link"
+msgstr ""
+
+#: inc/admin/bot/bot.php:36
+msgid "View link"
+msgstr ""
+
+#: inc/admin/bot/bot.php:37
+msgid "Search link"
+msgstr ""
+
+#: inc/admin/bot/bot.php:44
+msgid "List of broken links"
+msgstr ""
+
+#: inc/admin/bot/bot.php:77
+msgid "Enter the broken link URL"
+msgstr ""
+
+#: src/Actions/Api/PageSpeed/GetPageSpeedReport.php:45
+msgid "Invalid device"
+msgstr ""
+
+#: src/Actions/Api/PageSpeed/GetPageSpeedReport.php:55
+msgid "No data found"
+msgstr ""
