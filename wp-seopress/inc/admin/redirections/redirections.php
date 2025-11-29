@@ -90,11 +90,21 @@ function seopress_register_redirections_cpt() {
  * @return array
  */
 function seopress_redirections_map_meta_cap( $caps, $cap, $user_id, $args ) {
-        if ( 'edit_redirection' === $cap || 'delete_redirection' === $cap || 'read_redirection' === $cap ) {
-                $post      = get_post( $args[0] );
-                $post_type = get_post_type_object( $post->post_type );
-                $caps      = array();
-        }
+	if ( 'edit_redirection' === $cap || 'delete_redirection' === $cap || 'read_redirection' === $cap ) {
+		$post_id = isset( $args[0] ) ? (int) $args[0] : 0;
+
+		if ( ! $post_id ) {
+			return array( 'do_not_allow' );
+		}
+
+		$post      = get_post( $post_id );
+		$post_type = $post ? get_post_type_object( $post->post_type ) : null;
+
+		if ( ! $post || ! $post_type ) {
+			return array( 'do_not_allow' );
+		}
+		$caps      = array();
+	}
 
         if ( 'edit_redirection' === $cap ) {
                 $caps[] = ( $user_id === (int) $post->post_author ) ? $post_type->cap->edit_posts : $post_type->cap->edit_others_posts;
