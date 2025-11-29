@@ -71,17 +71,27 @@ function seopress_flag_pro_plugin_active( $plugins ) {
                 $plugins = array();
         }
 
-        if ( isset( $plugins['wp-seopress-pro/seopress-pro.php'] ) || in_array( 'wp-seopress-pro/seopress-pro.php', $plugins, true ) ) {
-                return $plugins;
+        $pro_plugins = array(
+                'wp-seopress-pro/seopress-pro.php',
+                'wp-seopress/wp-seopress-pro/seopress-pro.php',
+        );
+
+        foreach ( $pro_plugins as $pro_plugin ) {
+                if ( isset( $plugins[ $pro_plugin ] ) || in_array( $pro_plugin, $plugins, true ) ) {
+                        return $plugins;
+                }
         }
+
+        // Default to the classic slug to ensure WordPress helpers detect PRO.
+        $plugin_slug = 'wp-seopress-pro/seopress-pro.php';
 
         if ( seopress_is_associative_array( $plugins ) ) {
-                $plugins['wp-seopress-pro/seopress-pro.php'] = time();
+                $plugins[ $plugin_slug ] = time();
 
                 return $plugins;
         }
 
-        $plugins[] = 'wp-seopress-pro/seopress-pro.php';
+        $plugins[] = $plugin_slug;
 
         return $plugins;
 }
@@ -107,9 +117,21 @@ function seopress_bootstrap_bundled_pro() {
                 return;
         }
 
-        $pro_main_file = trailingslashit( dirname( SEOPRESS_PLUGIN_DIR_PATH ) ) . 'wp-seopress-pro/seopress-pro.php';
+        $pro_main_files = array(
+                trailingslashit( dirname( SEOPRESS_PLUGIN_DIR_PATH ) ) . 'wp-seopress-pro/seopress-pro.php', // Sibling plugin.
+                SEOPRESS_PLUGIN_DIR_PATH . 'wp-seopress-pro/seopress-pro.php', // Bundled inside the core plugin.
+        );
 
-        if ( ! file_exists( $pro_main_file ) ) {
+        $pro_main_file = '';
+
+        foreach ( $pro_main_files as $candidate ) {
+                if ( file_exists( $candidate ) ) {
+                        $pro_main_file = $candidate;
+                        break;
+                }
+        }
+
+        if ( '' === $pro_main_file ) {
                 return;
         }
 
