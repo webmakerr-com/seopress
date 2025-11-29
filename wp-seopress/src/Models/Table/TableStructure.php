@@ -23,9 +23,13 @@ class TableStructure implements TableStructureInterface {
 	 *
 	 * @param array $columns The columns.
 	 */
-	public function __construct( $columns ) {
-		$this->columns = $columns;
-	}
+        public function __construct( $columns ) {
+                if ( ! is_array( $columns ) || empty( $columns ) ) {
+                        throw new \InvalidArgumentException( 'Invalid columns array provided to TableStructure' );
+                }
+
+                $this->columns = $columns;
+        }
 
 
 	/**

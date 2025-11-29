@@ -3,14 +3,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-if ( is_plugin_active( 'wp-seopress-pro/seopress-pro.php' ) && defined( 'SEOPRESS_PRO_VERSION' ) && version_compare( SEOPRESS_PRO_VERSION, '5.4', '<' ) ) { // Quick fix to prevent fatal error for SEOPress < 5.4
-	// do nothing.
-} else {
-	/**
-	 * Return settings
-	 *
-	 * @return array
-	 */
+        /**
+         * Return settings
+         *
+         * @return array
+         */
 	function seopress_return_settings() {
 		$settings = array();
 
@@ -106,7 +103,6 @@ if ( is_plugin_active( 'wp-seopress-pro/seopress-pro.php' ) && defined( 'SEOPRES
 	 *
 	 * @return void
 	 */
-	function seopress_flush_rewrite_rules() {
-		flush_rewrite_rules( false );
-	}
-}
+        function seopress_flush_rewrite_rules() {
+                flush_rewrite_rules( false );
+        }

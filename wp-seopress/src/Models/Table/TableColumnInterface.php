@@ -22,12 +22,26 @@ interface TableColumnInterface {
 	 *
 	 * @return string
 	 */
-	public function getName(); // phpcs:ignore -- TODO: check if method is outside this class before renaming.
+        public function getName(); // phpcs:ignore -- TODO: check if method is outside this class before renaming.
 
-	/**
-	 * The getPrimaryKey function.
-	 *
-	 * @return bool
-	 */
-	public function getPrimaryKey(); // phpcs:ignore -- TODO: check if method is outside this class before renaming.
+        /**
+         * The getPrimaryKey function.
+         *
+         * @return bool
+         */
+        public function getPrimaryKey(); // phpcs:ignore -- TODO: check if method is outside this class before renaming.
+
+        /**
+         * Whether the column should be indexed.
+         *
+         * @return bool
+         */
+        public function getIndex();
+
+        /**
+         * Default value for the column.
+         *
+         * @return mixed
+         */
+        public function getDefaultValue();
 }

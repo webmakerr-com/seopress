@@ -206,9 +206,21 @@ class TableList {
 	 *
 	 * @return array
 	 */
-	public function getTables() { // phpcs:ignore -- TODO: check if method is outside this class before renaming.
-		return array(
-			'seopress_content_analysis' => $this->getTableContentAnalysis(),
-		);
-	}
+        public function getTables() { // phpcs:ignore -- TODO: check if method is outside this class before renaming.
+                return array_merge(
+                        array(
+                                'seopress_content_analysis' => $this->getTableContentAnalysis(),
+                        ),
+                        $this->getAdditionalTables()
+                );
+        }
+
+        /**
+         * Additional tables that can be provided by Pro logic.
+         *
+         * @return array
+         */
+        protected function getAdditionalTables() {
+                return array();
+        }
 }

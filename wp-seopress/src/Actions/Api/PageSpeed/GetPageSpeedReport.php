@@ -10,7 +10,7 @@ use SEOPress\Core\Hooks\ExecuteHooks;
 
 class GetPageSpeedReport implements ExecuteHooks {
         public function hooks() {
-                if ( defined( 'SEOPRESS_PRO_VERSION' ) ) {
+                if ( ! $this->shouldRegister() ) {
                         return;
                 }
 
@@ -56,5 +56,14 @@ class GetPageSpeedReport implements ExecuteHooks {
                 }
 
                 return new \WP_REST_Response( $data );
+        }
+
+        /**
+         * Determine if the route should be registered.
+         *
+         * @return bool
+         */
+        protected function shouldRegister() {
+                return ! defined( 'SEOPRESS_PRO_VERSION' );
         }
 }

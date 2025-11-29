@@ -56,13 +56,15 @@ class TableManager {
 	 *
 	 * @return void
 	 */
-	public function create( TableInterface $table ) {
-		if ( $this->exist( $table ) ) {
-			return;
-		}
+        public function create( TableInterface $table ) {
+                if ( $this->exist( $table ) ) {
+                        $this->query_create_table->addMissingColumns( $table );
 
-		$this->query_create_table->create( $table );
-	}
+                        return;
+                }
+
+                $this->query_create_table->create( $table );
+        }
 
 	/**
 	 * The createTablesIfNeeded function.

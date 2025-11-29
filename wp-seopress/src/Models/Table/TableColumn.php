@@ -52,13 +52,14 @@ class TableColumn implements TableColumnInterface {
 	 * @param string $name The name.
 	 * @param array  $data The data.
 	 */
-	public function __construct( $name, $data = array() ) {
+        public function __construct( $name, $data = array() ) {
 
-		$this->name        = $name;
-		$this->type        = isset( $data['type'] ) ? $data['type'] : 'varchar';
-		$this->primary_key = isset( $data['primaryKey'] ) ? (bool) $data['primaryKey'] : false;
-		$this->index       = isset( $data['index'] ) ? $data['index'] : false;
-	}
+                $this->name        = $name;
+                $this->type        = isset( $data['type'] ) ? $data['type'] : 'varchar';
+                $this->primary_key = isset( $data['primaryKey'] ) ? (bool) $data['primaryKey'] : false;
+                $this->index       = isset( $data['index'] ) ? $data['index'] : false;
+                $this->default_value = isset( $data['default'] ) ? $data['default'] : null;
+        }
 
 	/**
 	 * The getType function.
@@ -108,7 +109,16 @@ class TableColumn implements TableColumnInterface {
 	 *
 	 * @return bool
 	 */
-	public function getIndex() { // phpcs:ignore -- TODO: check if method is outside this class before renaming.
-		return $this->index;
-	}
+        public function getIndex() { // phpcs:ignore -- TODO: check if method is outside this class before renaming.
+                return $this->index;
+        }
+
+        /**
+         * Default value of the column.
+         *
+         * @return mixed
+         */
+        public function getDefaultValue() { // phpcs:ignore -- TODO: check if method is outside this class before renaming.
+                return $this->default_value;
+        }
 }
